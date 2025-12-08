@@ -20,7 +20,6 @@ case "${op}" in
         install_dev_packages
     ;;
     *)
-        echo "Saindo.."
         exit
     ;;
 esac

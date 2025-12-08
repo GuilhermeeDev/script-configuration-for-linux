@@ -126,6 +126,7 @@ function install_dev_packages(){
   echo "39. nmap                 40. ansible"
   echo "41. terraform            42. awscli"
   echo "43. azure-cli            44. google-cloud-cli"
+  echo "43. erlang               44. elixir"
   echo
   echo "Deseja adicionar um pacote não listado? (S/N)"; read op
   op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
@@ -245,14 +246,15 @@ function create_file_packages(){
   echo "awscli"
   echo "azure-cli"
   echo "google-cloud-cli"
-  echo "snapd"
+  echo "erlang"
+  echo "elixir"
   } >> ./config/vars/devPackages.txt
 }
 
-# function install_packages_lfs(){
-#   #Monta um .zip com os arquivos .deb | .appImage | selecionados ou um pacotão ja pre montado.
-#   echo " "
-# }
+function install_packages_lfs(){
+  #Monta um .zip com os arquivos .deb | .appImage | selecionados ou um pacotão ja pre montado.
+  echo " "
+}
 
 function safe_delete() {
   [[ -z "$1" ]] && { echo "ERRO: Caminho vazio para delete"; return 1; }
