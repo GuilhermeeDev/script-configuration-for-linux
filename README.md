@@ -1,7 +1,7 @@
 # script-configuration-for-linux
 Script de configuração para distros linux e baseadas em linux.
 
-- Acessar o dir raiz do script
+- Acessar o dir raiz do script:
 ```
 cd src
 ```
