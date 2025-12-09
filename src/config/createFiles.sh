@@ -3,8 +3,8 @@
 mkdir ./config/vars
 mkdir ./logs
 touch ./config/vars/config.json
-touch ./config/vars/basicPackages.txt
-touch ./config/vars/devPackages.txt
+touch ./config/vars/basic-Packages.txt
+touch ./config/vars/dev-Packages.txt
 touch ./config/.env
 
 
