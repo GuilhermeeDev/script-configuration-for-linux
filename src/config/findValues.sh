@@ -3,7 +3,7 @@
 # shellcheck disable=SC1091
 # shellcheck disable=SC2153
 # shellcheck disable=SC2129
-
+# shellcheck disable=SC2188
 source /etc/os-release
 
 get_pktmanager(){
@@ -34,23 +34,19 @@ get_pktmanager(){
 }
 
 # Obtendo valores de ambiente
-user="$USER"
 pktmanager="$(get_pktmanager)"
 distrocorrigida="${NAME// /}"
-id="$ID"
 
-# Limpando .env antes de escrever
-# shellcheck disable=SC2188
 > ./config/.env
 
 # Gravando valores no .env
 {
-    echo "user=$user"
+    echo "user=$USER"
     echo "pktmanager=$pktmanager"
     echo "distro=$distrocorrigida"
-    echo "id=$id"
+    echo "id=$ID"
+    echo "version=$VERSION_ID"
     echo "uploadrepository=github_repository"
-    echo "version=v0.0.1"
 } >> ./config/.env
 
 
