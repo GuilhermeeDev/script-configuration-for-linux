@@ -11,7 +11,6 @@
 # shellcheck disable=SC2086
 # shellcheck disable=SC2188
 
-
 source ./config/.env
 
 # Obrigatorio instalar
@@ -19,28 +18,27 @@ function install_dependencies(){
   data=$(date +%d-%m-%Y)
   LOGFILE="./logs/[$data]-dependencies-install.log"
   echo "Instalando dependências necessárias..."
-  sleep 1
 
   case "$id" in
     ubuntu|linuxmint|pop|debian)
       sudo apt update -y
-      sudo apt install -y nano jq git wget curl
+      sudo apt install -y nano jq wget curl git-lfs
       echo "Dependencias baixadas com sucesso!" | tee -a  "$LOGFILE"
     ;;
     
     arch|endeavouros|manjaro)
-      sudo pacman -Sy --noconfirm nano jq git wget curl
+      sudo pacman -Sy --noconfirm nano jq wget curl git-lfs
       echo "Dependencias baixadas com sucesso!" | tee -a  "$LOGFILE"
     ;;
     
     fedora)
-      sudo dnf install -y nano jq git wget curl
+      sudo dnf install -y nano jq wget curl git-lfs
       echo "Dependencias baixadas com sucesso!" | tee -a  "$LOGFILE"
     ;;
     
     opensuse* )
       sudo zypper refresh
-      sudo zypper install -y nano jq git wget curl
+      sudo zypper install -y nano jq wget curl git-lfs
       echo "Dependencias baixadas com sucesso!" | tee -a  "$LOGFILE"
     ;;
     
@@ -52,7 +50,6 @@ function install_dependencies(){
       exit 1
     ;;
   esac
-  echo " "
   pause
 }
 
@@ -123,6 +120,197 @@ function listar_pacotes() {
   done
 }
 
+function instalacao_guiada(){
+  tipo=()
+
+  clear
+
+  echo "+ Pacotes basicos para uso do linux.";
+  echo "- Esse pacote inclui ferramentas essenciais para o funcionamento do sistema.";
+  echo "Como: Navegador, gerenciador de rede, ferramentas de compressão, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("basic")
+  fi
+
+  clear
+
+  echo "+ Pacotes multimida para linux.";
+  echo "- Esse pacote inclui players de video, audio, editores de imagem, etc.";
+  echo "Como: Spotify, VLC, GIMP, Inkscape, ffmpeg, "; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("multimedia")
+  fi
+
+  clear
+
+  echo "+ Pacotes para jogos no linux.";
+  echo "- Esse pacote inclui plataformas de jogos, drivers e ferramentas para melhorar a performance.";
+  echo "Como: Steam, Lutris, Heroic, Wine, ProtonUp, MangoHud, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("games")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvedores.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento de software\n\
+  mas sem suporte para linguagem de programação específica!";
+  echo "Como: Git, Curl, Wget, VSCode, Neovim, Docker, Kubernetes, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev")
+  fi
+
+  clear
+
+  echo "+ Pacotes para redes sociais e comunicação.";
+  echo "- Esse pacote inclui aplicativos de mensagens e redes sociais.";
+  echo "Como: Discord, Telegram, Signal, Slack, Zoom, Skype, Teams, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("social")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em Java.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em Java.";
+  echo "Como: OpenJDK, Maven, Gradle, Eclipse, IntelliJ, VSCode, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-java")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em Python.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em Python.";
+  echo "Como: Python3, Pip, Virtualenv, Jupyter, Pylint, VSCode, PyCharm, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-python")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em JavaScript.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em JavaScript.";
+  echo "Como: Node.js, NPM, Yarn, TypeScript, ESLint, Prettier, VSCode, WebStorm, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-javascript")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em C/C++.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em C/C++.";
+  echo "Como: Build-Essential, CMake, GDB, Clang, VSCode, CLion, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-cpp")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em Rust.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em Rust.";
+  echo "Como: Rustc, Cargo, Rust-Analyzer, VSCode, CLion, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-rust")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em Go.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em Go.";
+  echo "Como: Golang, Go-Tools, VSCode, Gopls, Delve, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-go")
+  fi  
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em PHP.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em PHP.";
+  echo "Como: PHP, Composer, Laravel, VSCode, PhpStorm, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-php")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em Ruby.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em Ruby.";
+  echo "Como: Ruby, Rails, Gem, VSCode, RubyMine, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-ruby")
+  fi
+
+  clear
+
+  echo "+ Pacotes para desenvolvimento em Elixir.";
+  echo "- Esse pacote inclui ferramentas e IDEs para desenvolvimento em Elixir.";
+  echo "Como: Erlang, Elixir, Mix, VSCode, IntelliJ-Elixir, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("dev-elixir")
+  fi
+
+  clear
+
+  echo "+ Pacotes para DevOps e Administração de Sistemas.";
+  echo "- Esse pacote inclui ferramentas para DevOps e administração de sistemas.";
+  echo "Como: Docker, Kubernetes, Ansible, Terraform, Nginx, Git, etc."; 
+  echo "Deseja instalar esse pacote? (S/N)"; read op
+  op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+  if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+    tipo+=("devops")
+  fi
+
+  clear
+  local i=1
+  for pacote in "${tipo[@]}"; do
+    sleep 1
+    listar_pacotes "$pacote"
+
+    echo "Progressão: ($i/${#tipo[@]})"
+    echo "===================================================================="
+    echo "Deseja adicionar um pacote não listado? (S/N)"; read op
+    op=$(echo "$op" | tr '[:upper:]' '[:lower:]')
+    if [ "$op" = "s" ] || [ "$op" = "sim" ]; then
+      nano ./config/vars/$pacote-Packages.txt
+    fi
+
+    install_packages "$pacote"
+
+    ((i++))
+    clear
+  done
+  pause
+}
+
 function basic_packages(){
   tipo="basic"
 
@@ -165,27 +353,27 @@ function install_packages(){
 
   case "$id" in
     ubuntu|linuxmint|pop|debian)
-      echo "Sua distro é $id!" | tee -a "$LOGFILE"
+      echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo apt install -y"
     ;;
     
     arch|endeavouros|manjaro)
-      echo "Sua distro é $id!" | tee -a "$LOGFILE"
+      echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo pacman -S --noconfirm"
     ;;
     
     fedora)
-      echo "Sua distro é $id!" | tee -a "$LOGFILE"
+      echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo dnf install -y"
     ;;
     
     opensuse*)
-      echo "Sua distro é $id!" | tee -a "$LOGFILE"
+      echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo zypper install -y"
     ;;
     
     *)
-      echo "Distribuição '$id' não suportada ainda!" | tee -a "$LOGFILE"
+      echo "Distribuição '$id' não suportada ainda!" >> "$LOGFILE"
       return 1
     ;;
   esac
@@ -217,91 +405,253 @@ function install_packages(){
 }
 
 function create_file_packages(){
-  # Criando arquivos com pacotes basicos para linux.
   > ./config/vars/basic-Packages.txt
   {
-  echo "# Lista de pacotes basicos para linux."
-  echo "build-essential"
-  echo "linux-headers-generic"
-  echo "mesa-vulkan-drivers"
-  echo "net-tools"
-  echo "network-manager"
-  echo "flatpack"
-  echo "wget"
-  echo "xorg"
-  echo "curl"
-  echo "zip"
-  echo "unzip"
-  echo "htop"
-  echo "neofetch"
-  echo "vim"
-  echo "ufw"
-  echo "rar"
-  echo "unrar"
-  echo "tar"
-  echo "firefox"
-  echo "openssh-client"
-  echo "vlc"
-  echo "ffmpeg"
-  echo "libreoffice"
-  echo "okular"
-  echo "evince"
-  echo "gimp"
-  echo "steam"
-  echo "clamav"
-  echo "gnupg"
-  echo "lsd"
-  echo "fzf"
-  echo "tldr"
+    echo "build-essential"
+    echo "linux-headers-generic"
+    echo "mesa-vulkan-drivers"
+    echo "net-tools"
+    echo "network-manager"
+    echo "neofetch"
+    echo "firefox"
+    echo "openssh-client"
+    echo "lsd"
+    echo "fzf"
+    echo "tldr"
+    echo "rar"
+    echo "unrar"
+    echo "zip"
+    echo "unzip"
+    echo "vim"
+    echo "gimp"
+    echo "libreoffice"
+    echo "htop"
+    echo "gnupg"
   } >> ./config/vars/basic-Packages.txt
-  # < ./config/vars/basicPackages.txt
-  # Criando arquivo com pacotes de desenvolvedor para linux.
+
 
   > ./config/vars/dev-Packages.txt
   {
-  echo "cmake"
-  echo "pkg-config"
-  echo "gdb"
-  echo "lldb"
-  echo "valgrind"
-  echo "python3"
-  echo "python3-pip"
-  echo "python3-venv"
-  echo "jupyter-notebook"
-  echo "nodejs"
-  echo "npm"
-  echo "yarn"
-  echo "pnpm"
-  echo "default-jdk"
-  echo "maven"
-  echo "gradle"
-  echo "postgresql"
-  echo "sqlite3"
-  echo "mysql-client"
-  echo "redis"
-  echo "redis-tools"
-  echo "docker.io"
-  echo "docker-compose"
-  echo "podman"
-  echo "kubectl"
-  echo "virtualbox"
-  echo "qemu-system"
-  echo "dotnet-sdk-8.0"
-  echo "golang-go"
-  echo "rustc"
-  echo "cargo"
-  echo "php"
-  echo "php-cli"
-  echo "composer"
-  echo "ruby"
-  echo "ruby-dev"
-  echo "gem"
-  echo "httpie"
-  echo "nmap"
-  echo "ansible"
-  echo "erlang"
-  echo "elixir"
+    echo "curl"
+    echo "wget"
+    echo "gnupg"
+    echo "make"
+    echo "cmake"
+    echo "pkg-config"
+    echo "gdb"
+    echo "lldb"
+    echo "valgrind"
+    echo "podman"
+    echo "kubectl"
+    echo "virtualbox"
+    echo "qemu-system"
+    echo "vscode"
+    echo "neovim"
+    echo "sqlite3"
+    echo "redis-tools"
   } >> ./config/vars/dev-Packages.txt
+
+
+  > ./config/vars/games-Packages.txt
+  {
+    echo "steam"
+    echo "lutris"
+    echo "heroic-games-launcher"
+    echo "gamemode"
+    echo "mesa-vulkan-drivers"
+    echo "wine"
+    echo "winetricks"
+    echo "protonup-qt"
+    echo "mangohud"
+    echo "goverlay"
+    echo "flatpak"
+  } >> ./config/vars/games-Packages.txt
+
+
+  > ./config/vars/multimedia-Packages.txt
+  {
+    echo "vlc"
+    echo "ffmpeg"
+    echo "gimp"
+    echo "inkscape"
+    echo "kdenlive"
+    echo "audacity"
+    echo "obs-studio"
+    echo "shotwell"
+    echo "imagemagick"
+    echo "pinta"
+    echo "blender"
+    echo "cheese"
+    echo "spotify"
+    echo "celluloid"
+    echo "rhythmbox"
+    echo "darktable"
+    echo "krita"
+    echo "simple-scan"
+  } >> ./config/vars/multimedia-Packages.txt
+
+
+  > ./config/vars/dev-java-Packages.txt
+  {
+    echo "default-jdk"
+    echo "openjdk-17-jdk"
+    echo "maven"
+    echo "gradle"
+    echo "eclipse-java"
+    echo "intellij-idea-community"
+    echo "junit"
+    echo "visualvm"
+    echo "vscode"
+  } >> ./config/vars/dev-java-Packages.txt
+
+
+  > ./config/vars/dev-python-Packages.txt
+  {
+    echo "python3"
+    echo "python3-pip"
+    echo "python3-venv"
+    echo "virtualenv"
+    echo "pylint"
+    echo "black"
+    echo "mypy"
+    echo "flake8"
+    echo "jupyter-notebook"
+    echo "vscode"
+    echo "pycharm-community"
+  } >> ./config/vars/dev-python-Packages.txt
+
+
+  > ./config/vars/dev-javascript-Packages.txt
+  {
+    echo "nodejs"
+    echo "npm"
+    echo "yarn"
+    echo "nvm"
+    echo "typescript"
+    echo "eslint"
+    echo "prettier"
+    echo "nodemon"
+    echo "vscode"
+    echo "webstorm"
+  } >> ./config/vars/dev-javascript-Packages.txt
+
+
+  > ./config/vars/dev-cpp-Packages.txt
+  {
+    echo "build-essential"
+    echo "cmake"
+    echo "gdb"
+    echo "lldb"
+    echo "valgrind"
+    echo "clang"
+    echo "vscode"
+    echo "clion"
+  } >> ./config/vars/dev-cpp-Packages.txt
+
+
+  > ./config/vars/dev-rust-Packages.txt
+  {
+    echo "rustc"
+    echo "cargo"
+    echo "rust-analyzer"
+    echo "vscode"
+    echo "clion"
+    echo "cargo"
+    echo "rustfmt"
+    echo "clippy"
+  } >> ./config/vars/dev-rust-Packages.txt
+
+
+  > ./config/vars/dev-go-Packages.txt
+  {
+    echo "golang"
+    echo "go-tools"
+    echo "vscode"
+    echo "gopls"
+    echo "dlv"
+    echo "air"
+    echo "gin"
+    echo "goland"
+  } >> ./config/vars/dev-go-Packages.txt
+
+
+  > ./config/vars/dev-php-Packages.txt
+  {
+    echo "php"
+    echo "composer"
+    echo "laravel"
+    echo "symfony"
+    echo "codeigniter"
+    echo "phalcon"
+    echo "vscode"
+    echo "phpstorm"
+  } >> ./config/vars/dev-php-Packages.txt
+
+
+  > ./config/vars/dev-ruby-Packages.txt
+  {
+    echo "ruby"
+    echo "rails"
+    echo "ruby-dev"
+    echo "gem"
+    echo "bundler"
+    echo "rbenv"
+    echo "vscode"
+    echo "rubymine"
+    echo "sqlite3"
+  } >> ./config/vars/dev-ruby-Packages.txt
+
+
+  > ./config/vars/dev-elixir-Packages.txt
+  {
+    echo "erlang"
+    echo "elixir"
+    echo "mix"
+    echo "hex"
+    echo "phoenix"
+    echo "vscode"
+    echo "intellij-elixir"
+  } >> ./config/vars/dev-elixir-Packages.txt
+
+
+  > ./config/vars/devops-Packages.txt
+  {
+    echo "docker.io"
+    echo "docker-compose"
+    echo "podman"
+    echo "kubectl"
+    echo "helm"
+    echo "ansible"
+    echo "terraform"
+    echo "packer"
+    echo "vagrant"
+    echo "qemu-system"
+    echo "virt-manager"
+    echo "awscli"
+    echo "azure-cli"
+    echo "google-cloud-cli"
+    echo "nginx"
+    echo "apache2"
+    echo "tmux"
+    echo "git"
+    echo "jq"
+    echo "yq"
+  } >> ./config/vars/devops-Packages.txt
+
+
+  > ./config/vars/social-Packages.txt
+  {
+    echo "discord"
+    echo "telegram-desktop"
+    echo "signal-desktop"
+    echo "slack-desktop"
+    echo "zoom"
+    echo "skypeforlinux"
+    echo "whatsapp-for-linux"
+    echo "teams"
+    echo "evolution"
+  } >> ./config/vars/social-Packages.txt
+
 }
 
 function safe_delete() {
