@@ -1,55 +1,85 @@
-# Linux AutoSetup 🐧  
-Migrar para uma nova distribuição Linux ou até mesmo reinstalar o sistema pode ser um processo demorado, repetitivo e cheio de pequenos ajustes. Pensando nisso, nasceu o Linux AutoSetup, uma ferramenta interativa que automatiza a configuração inicial do sistema, instala pacotes essenciais, detecta a distribuição em uso, adiciona repositórios oficiais e cria um ambiente pronto para uso em poucos minutos.
+# Linux AutoSetup 🐧
 
+## O que é?
+Migrar para uma distribuição Linux ou até mesmo mudar de distro pode ser um processo repetitivo e cheio de pequenos ajustes. Pensando nisso, nasceu o Linux AutoSetup, uma ferramenta que automatiza a configuração inicial do sistema, instala pacotes essenciais, adiciona repositórios oficiais/extra oficiais e cria um ambiente pronto para uso, podendo até te ajudar a personalizar a sua distro!
+
+## Para que serve?
 Este projeto foi criado para ajudar:
 - quem está migrando do Windows para o Linux
 - quem instalou uma distro nova e quer deixar tudo pronto rapidamente
-- desenvolvedores que precisam montar o ambiente de trabalho sem perder tempo
 - usuários que querem automação, praticidade e padronização
 
 ---
 ## 🔧 Ferramentas
 Este projeto fornece ferramentas como:
-- Instalação de dependências essenciais
 - Adição de repositórios oficiais
-- Instalação de pacotes básicos/desenvolvimento
-- (futuro) configuração de ambientes
-- (futuro) configuração de 
-- (futuro) Beautiful Linux!
-- (futuro) instalação e configuração de terminal personalizado
-
+- Instalação de pacotes básicos e de desenvolvimento
+- Instalação de pacotes guiada
+- (futuro) Configuração base de ambientes
+- (futuro) Instalação e configuração de terminal personalizado
+- (futuro) Configuração de automatizações do sistema.
+- (futuro) Pacotão -lfs com app's .deb | .appImage |
 ---
 
 ## Suporte
+
 ```sh
-|🐧 Distro                              | 📦 Gerenciador de Pacotes |  Status |
--------------------------------------------------------------------------------
-|🟧 Debian-based (Ubuntu, Mint, Pop!_OS)|   apt	                    |    ✅   |
-|🟦 Arch-based   (Arch, Manjaro)	    |   pacman	                |    ✅   |
-|🟪 Fedora	                            |   dnf	                    |    ✅   |
-|🟩 openSUSE	                        |   zypper                  |    ✅   |
+    🐧 Distro       | 🟧 Debian-based | 🟦 Arch-based | 🟪 Fedora | 🟨 openSUSE | 🟩 Alpine |
+---------------------------------------------------------------------------------------------
+📦 Inst. de pacotes |       ✅        |       ✅      |      ✅   |      ✅     |     ❌    | 
+🗃️ Ad. Repositorios |       ✅        |       ❌      |      ❌   |      ❌     |     ❌    |
+🛠️ Inst. Terminal   |       ❌        |       ❌      |      ❌   |      ❌     |     ❌    |
+🌟 Automatizações   |       ❌        |       ❌      |      ❌   |      ❌     |     ❌    | 
 ```
+
 ## Funcionalidades principais
 
-### 1. **Instalação de drivers e dependencias iniciais**
-- Instalação de drivers e dependencias com base no hardware e distro utilizada.
-
-### 2. **Instalação de Pacotes**
-- O usuário pode instalar pacotes a partir de arquivos `.txt` predefinidos.
-- O usuário pode editar arquivos `.txt` para adicionar pacotes.
-- A lista de pacotes básicos e de desenvolvimento pode ser conferida em pacotes.
+### 1. **Instalação de Pacotes**
+- O usuário pode instalar pacotes atraves de uma instalação guiada (Perguntas de Sim ou Não).
+- O usuário pode editar arquivos de instalação de pacotes (necessario saber o nome da pacote).
+- O usuário pode instalar pacotes pré-definidos para uso básico do linux.
+- O usuário pode instalar pacotes para desenvolver/programar em linux.
 - 
-### 3. **Adição de Repositórios Oficiais**
+### 2. **Adição de Repositórios Oficiais e extra oficiais**
 Cada distro possui repositórios dedicadas:
-- Ubuntu/Debian/Mint/Pop!_OS → Universe, Multiverse, Restricted.
-- Arch → Multilib, Chaotic-AUR.
-- Fedora → RPM Fusion. 
+- Ubuntu/Debian/Mint/Pop!_OS → Universe, Multiverse, Restricted ++ extra oficiais.
+- Arch/Manjaro → Multilib, Chaotic-AUR.
 - openSUSE → Repositórios main/community.
+- Fedora → RPM Fusion. 
 
+### 3. **Instalação e configuração de terminal personalizado**
+(futuro)
+### 4. **Configuração de automatizações para a sua distro**
+(futuro)
 ---
 
 ## Requisitos
-- Bash 4+
-- Permissão de sudo
-- Conexão com a internet
+- permissão de sudo
+- conexão com a internet
+- bash 4+
+- git instalado
+
 ---
+
+## Como rodar na minha máquina? 
+Primeiro certifique-se de ter o `git` instalado no seu linux: `git --version`
+saida esperada `git version 2.*.*`
+
+Clone o repositório git.
+```sh
+git clone https://github.com/GuilhermeeDev/script-Linux-auto-setup.git
+```
+
+Acesse o diretorio raiz e execute o script `./main.sh`:
+```sh
+cd src
+./main.sh
+```
+
+---
+
+## O que devo ter em mente antes de abrir um Pull Request?
+- Esse é um projeto opensource para a comunidade e contribuições são bem-vindas!
+- Em caso de duvida, sugestões ou erros abra uma issue.
+- Antes de contribuir com o projeto verifique [lista de ideias para contribuição](./docs/TODOLIST.md).
+- Quer contribuir com o projeto? [passo a passo](./docs/CONTRIBUTING.md)
