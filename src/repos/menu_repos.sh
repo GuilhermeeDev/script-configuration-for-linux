@@ -1,5 +1,10 @@
+#!/bin/bash
+
 clear
+# shellcheck disable=SC1091
 source ./repos/functions.sh
+
+# shellcheck disable=SC1091
 source ./config/.env
 
 CYAN="\e[36m"
@@ -7,6 +12,8 @@ YELLOW="\e[1;33m"
 RESET="\e[0m"
 
 echo -e "========================[ Repositórios ]========================"
+
+# shellcheck disable=SC2154
 echo -e "Sua ditro é: ${CYAN}$distro${RESET}"
 echo ""
 echo -e "[1] Instalar repositórios oficiais"

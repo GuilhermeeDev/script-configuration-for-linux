@@ -33,12 +33,12 @@ echo -e "${RESET}"
 echo -e "${NEON}========================[ MENU PRINCIPAL ]========================${RESET}"
 echo -e "${GREEN}Selecione uma das opções abaixo:${RESET}"
 echo ""
-
 echo -e "${LIGHT_GREEN}[1]${RESET} Instalação de pacotes guiada (Perguntas de Sim/Não)"
 echo -e "${LIGHT_GREEN}[2]${RESET} Instalar pacotes básicos do sistema"
 echo -e "${LIGHT_GREEN}[3]${RESET} Instalar pacotes para programadores"
-echo -e "${LIGHT_GREEN}[4]${RESET} Adicionar repositórios conforme a distro"
-echo -e "${LIGHT_GREEN}[5]${RESET} Sair"
+echo -e "${LIGHT_GREEN}[4]${RESET} Instalar pacotes .appImages || .deb (Ubuntu-based)"
+echo -e "${LIGHT_GREEN}[5]${RESET} Adicionar repositórios com base na distro"
+echo -e "${LIGHT_GREEN}[6]${RESET} Sair"
 echo ""
 
 read -p "$(echo -e "${YELLOW}Digite sua opção: ${RESET}")" op
@@ -49,16 +49,22 @@ case "${op}" in
     ;;
     2)
         basic_packages
+
     ;;
     3)
         dev_packages
     ;;
     4)
+        ./tools/install_appimages.sh
+    ;;
+    5)
         ./repos/menu_repos.sh
     ;;
-    5|*)
+    6|*)
         echo -e "${RED}Saindo...${RESET}"
-        sleep 1
+        rm -rf "./config/vars"
+        rm "./config/.env"
+
         clear
         exit 1
     ;;

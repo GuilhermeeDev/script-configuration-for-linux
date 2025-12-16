@@ -9,22 +9,24 @@ for f in ./repos/*.sh; do
     chmod +x "$f"
 done
 
+for f in ./tools/*.sh; do
+    chmod +x "$f"
+done
+
 # ────────────────────────────────────────────────
 # CORES
 # ────────────────────────────────────────────────
 GREEN="\e[0;32m"
 YELLOW="\e[1;33m"
-LIGHT_GREEN="\e[92m"
 RESET="\e[0m"
 DARK_GREEN="\e[38;5;29m"
-LIGHIT_GREEN="\e[38;5;25m"
 PASTEL_GREEN="\e[38;5;121m"
 CYAN="\e[36m"
 NEON_GREEN="\e[92m"
 clear
 prompt="${YELLOW}Pressione qualquer tecla para continuar...${RESET}"
 # Animação de digitação
-type_text() {
+function type_text() {
     text="$1"
     delay="${2:-0.005}"
     for ((i=0; i<${#text}; i++)); do
@@ -33,7 +35,7 @@ type_text() {
     done
 }
 
-loading_bar() {
+function loading_bar() {
     bar=""
     for i in {1..30}; do
         bar="#$bar"
@@ -43,7 +45,7 @@ loading_bar() {
     echo ""
 }
 
-ascii_linux_as() {
+function ascii_linux_as() {
 echo -e "${DARK_GREEN}"
 cat << "EOF"
 ██╗      ██╗ ███╗   ██╗  ██╗   ██╗ ██╗  ██╗    █████╗ ███████╗

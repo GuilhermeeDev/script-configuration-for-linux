@@ -116,6 +116,11 @@ function install_repos_unoficiais(){
 
 function oficial_ubuntu() {
     # Repositorios para Ubuntu | Debian | Linux Mint | Pop_os
+    
+    if [[ $id == "linuxmint" ]]; then
+        mv /etc/apt/preferences.d/nosnap.pref /etc/apt/preferences.d/nosnap.backup
+    fi
+
     sudo add-apt-repository main -y
     sudo add-apt-repository universe -y
     sudo add-apt-repository multiverse -y
@@ -134,6 +139,7 @@ function unoficial_ubuntu(){
     sudo add-apt-repository ppa:papirus/papirus -y
     sudo add-apt-repository ppa:obsproject/obs-studio -y
     sudo add-apt-repository ppa:ondrej/php -y
+
 
     sudo apt update -y
 }

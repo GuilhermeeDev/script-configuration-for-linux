@@ -20,6 +20,7 @@ touch ./config/vars/dev-ruby-Packages.txt
 touch ./config/vars/dev-elixir-Packages.txt
 touch ./config/vars/dev-devops-Packages.txt
 
+touch ./config/vars/list-apps.txt
 
 
 

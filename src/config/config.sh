@@ -1,7 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC1091
-
-
+# shellcheck disable=SC1091    
 
 # Função que orquestra o funcionamento inicial do script
 
@@ -11,7 +9,7 @@
 source ./config/functions.sh
 install_dependencies
 construct_json
-create_file_packages
+create_file_content
 
 # Chama o menu
 ./config/menu.sh

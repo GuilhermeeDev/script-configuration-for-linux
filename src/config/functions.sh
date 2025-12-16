@@ -10,13 +10,17 @@
 # shellcheck disable=SC2126
 # shellcheck disable=SC2086
 # shellcheck disable=SC2188
+# shellcheck disable=SC2155
 
 source ./config/.env
+
+export data="$(date +%d-%m-%y 2>/dev/null || echo "0-0-0")"
+export hora="$(date +%H:%M 2>/dev/null || echo "00:01")"
 
 # Obrigatorio instalar
 function install_dependencies(){
   data=$(date +%d-%m-%Y)
-  LOGFILE="./logs/[$data]-dependencies-install.log"
+  LOGFILE="./logs/[Instalacao-dependencias]-[$data]-[$hora].log"
   echo "Instalando dependências necessárias..."
 
   case "$id" in
@@ -50,7 +54,6 @@ function install_dependencies(){
       exit 1
     ;;
   esac
-  pause
 }
 
 function construct_json(){
@@ -344,8 +347,7 @@ function dev_packages(){
 }
 
 function install_packages(){
-  data=$(date +%d-%m-%Y)
-  LOGFILE="./logs/[$data]-[$1]-Install.log"
+  LOGFILE="./logs/[$data]-[$hora]-[$1]-Install.log"
   local id=$id
 
   total=$(grep -v '^\s*$' ./config/vars/$1-Packages.txt | wc -l)
@@ -355,21 +357,25 @@ function install_packages(){
     ubuntu|linuxmint|pop|debian)
       echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo apt install -y"
+      $metodo >> .env
     ;;
     
     arch|endeavouros|manjaro)
       echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo pacman -S --noconfirm"
+      $metodo >> .env
     ;;
     
     fedora)
       echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo dnf install -y"
+      $metodo >> .env
     ;;
     
     opensuse*)
       echo "Sua distro é $id!" >> "$LOGFILE"
       metodo="sudo zypper install -y"
+      $metodo >> .env
     ;;
     
     *)
@@ -379,7 +385,7 @@ function install_packages(){
   esac
 
 
-  while IFS= read -r package; do
+  while IFS= read -r package; do 
     [ -z "$package" ] && continue 
 
     if is_installed "$package"; then
@@ -404,7 +410,7 @@ function install_packages(){
   pause
 }
 
-function create_file_packages(){
+function create_file_content(){
   > ./config/vars/basic-Packages.txt
   {
     echo "build-essential"
@@ -427,8 +433,8 @@ function create_file_packages(){
     echo "libreoffice"
     echo "htop"
     echo "gnupg"
+    echo "snapd"
   } >> ./config/vars/basic-Packages.txt
-
 
   > ./config/vars/dev-Packages.txt
   {
@@ -445,12 +451,10 @@ function create_file_packages(){
     echo "kubectl"
     echo "virtualbox"
     echo "qemu-system"
-    echo "vscode"
     echo "neovim"
     echo "sqlite3"
     echo "redis-tools"
   } >> ./config/vars/dev-Packages.txt
-
 
   > ./config/vars/games-Packages.txt
   {
@@ -467,7 +471,6 @@ function create_file_packages(){
     echo "flatpak"
   } >> ./config/vars/games-Packages.txt
 
-
   > ./config/vars/multimedia-Packages.txt
   {
     echo "vlc"
@@ -482,14 +485,12 @@ function create_file_packages(){
     echo "pinta"
     echo "blender"
     echo "cheese"
-    echo "spotify"
     echo "celluloid"
     echo "rhythmbox"
     echo "darktable"
     echo "krita"
     echo "simple-scan"
   } >> ./config/vars/multimedia-Packages.txt
-
 
   > ./config/vars/dev-java-Packages.txt
   {
@@ -501,9 +502,7 @@ function create_file_packages(){
     echo "intellij-idea-community"
     echo "junit"
     echo "visualvm"
-    echo "vscode"
   } >> ./config/vars/dev-java-Packages.txt
-
 
   > ./config/vars/dev-python-Packages.txt
   {
@@ -516,10 +515,8 @@ function create_file_packages(){
     echo "mypy"
     echo "flake8"
     echo "jupyter-notebook"
-    echo "vscode"
     echo "pycharm-community"
   } >> ./config/vars/dev-python-Packages.txt
-
 
   > ./config/vars/dev-javascript-Packages.txt
   {
@@ -531,7 +528,6 @@ function create_file_packages(){
     echo "eslint"
     echo "prettier"
     echo "nodemon"
-    echo "vscode"
     echo "webstorm"
   } >> ./config/vars/dev-javascript-Packages.txt
 
@@ -544,17 +540,14 @@ function create_file_packages(){
     echo "lldb"
     echo "valgrind"
     echo "clang"
-    echo "vscode"
     echo "clion"
   } >> ./config/vars/dev-cpp-Packages.txt
-
 
   > ./config/vars/dev-rust-Packages.txt
   {
     echo "rustc"
     echo "cargo"
     echo "rust-analyzer"
-    echo "vscode"
     echo "clion"
     echo "cargo"
     echo "rustfmt"
@@ -566,7 +559,6 @@ function create_file_packages(){
   {
     echo "golang"
     echo "go-tools"
-    echo "vscode"
     echo "gopls"
     echo "dlv"
     echo "air"
@@ -583,7 +575,6 @@ function create_file_packages(){
     echo "symfony"
     echo "codeigniter"
     echo "phalcon"
-    echo "vscode"
     echo "phpstorm"
   } >> ./config/vars/dev-php-Packages.txt
 
@@ -596,7 +587,6 @@ function create_file_packages(){
     echo "gem"
     echo "bundler"
     echo "rbenv"
-    echo "vscode"
     echo "rubymine"
     echo "sqlite3"
   } >> ./config/vars/dev-ruby-Packages.txt
@@ -609,7 +599,6 @@ function create_file_packages(){
     echo "mix"
     echo "hex"
     echo "phoenix"
-    echo "vscode"
     echo "intellij-elixir"
   } >> ./config/vars/dev-elixir-Packages.txt
 
@@ -641,23 +630,14 @@ function create_file_packages(){
 
   > ./config/vars/social-Packages.txt
   {
-    echo "discord"
-    echo "telegram-desktop"
-    echo "signal-desktop"
-    echo "slack-desktop"
-    echo "zoom"
-    echo "skypeforlinux"
-    echo "whatsapp-for-linux"
-    echo "teams"
     echo "evolution"
   } >> ./config/vars/social-Packages.txt
 
-}
-
-function safe_delete() {
-  [[ -z "$1" ]] && { echo "ERRO: Caminho vazio para delete"; return 1; }
-  [[ "$1" == "/" ]] && { echo "ERRO: PERIGO: não vou deletar /"; return 1; }
-  rm -rf "$1" >/dev/null 2>&1
+  > ./config/vars/list-apps.txt
+  {
+    echo "Obsidian|https://github.com/obsidianmd/obsidian-releases/releases/download/v1.10.6/Obsidian-1.10.6.AppImage"
+    echo "Visual-Code|https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+  } >> ./config/vars/list-apps.txt
 }
 
 function pause() {
